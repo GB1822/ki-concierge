@@ -1,7 +1,95 @@
-# KI-CONCIERGE 🤖
-## Intelligenter Website-Chatbot als Micro-SaaS
+# 🤖 KI-CONCIERGE
+## Micro-SaaS Chatbot für Websites - Automatisches Crawling & PDF Processing
 
-**Ein Chatbot der deine Website crawlt, PDFs liest und sich automatisch anpasst.**
+**Live Demo:** https://ki-strategen.github.io/ki-concierge/test.html  
+**ROI-Rechner:** https://ki-strategen.github.io/ki-concierge/roi-calculator.html
+
+Ein intelligenter Chatbot der automatisch deine Website crawlt, PDFs liest und sich an dein Design anpasst.  
+**30 Sekunden Integration • €29-99/Monat • DSGVO-konform**
+
+---
+
+## 🚀 QUICK START
+
+### 1. **Demo testen**
+```bash
+# Lokal öffnen
+open test.html
+
+# Oder online
+https://ki-strategen.github.io/ki-concierge/test.html
+```
+
+### 2. **Auf GitHub deployen**
+```bash
+# Repository erstellen
+git init
+git add .
+git commit -m "KI-CONCIERGE v1.0"
+
+# Auf GitHub pushen
+git remote add origin https://github.com/your-username/ki-concierge.git
+git push -u origin main
+
+# GitHub Pages aktivieren
+# Settings → Pages → Main branch → Save
+```
+
+### 3. **Widget integrieren**
+```html
+<!-- Vor </body> einfügen -->
+<script>
+  window.kiConciergeConfig = {
+    apiKey: 'your-api-key',
+    primaryColor: '#3B82F6',
+    welcomeMessage: 'Hallo! Wie kann ich helfen?'
+  };
+</script>
+<script src="widget.js"></script>
+```
+
+---
+
+## 🎯 LIVE DEMOS
+
+### 1. **Chatbot Demo**
+[test.html](https://ki-strategen.github.io/ki-concierge/test.html) - Vollständiger Chatbot mit Micro-SaaS Pricing
+
+### 2. **ROI-Rechner (Lead-Magnet)**
+[roi-calculator.html](https://ki-strategen.github.io/ki-concierge/roi-calculator.html) - Berechne KI-ROI für KMU
+
+### 3. **Backend API**
+`backend/app.py` - Python FastAPI Backend mit LangChain
+
+---
+
+## 📁 PROJECT STRUCTURE
+
+```
+ki-concierge/
+├── test.html                 # Live Chatbot Demo
+├── roi-calculator.html       # ROI-Rechner (Lead-Magnet)
+├── frontend/widget.js        # Embeddable Chatbot Widget
+├── backend/app.py           # Python FastAPI Backend
+├── deploy.sh                # Docker Deployment Script
+├── README.md                # Diese Dokumentation
+├── PUSH_TO_GITHUB.md        # GitHub Deployment Guide
+└── .gitignore              # Git Ignore File
+```
+
+**Frontend:**
+- `test.html` - Komplette Demo mit Pricing & Features
+- `roi-calculator.html` - ROI-Berechnung für Lead-Generation
+- `widget.js` - JavaScript Widget für Website-Integration
+
+**Backend:**
+- `app.py` - FastAPI Server mit LangChain RAG
+- Website Crawling, PDF Processing, Vector Search
+
+**Deployment:**
+- `deploy.sh` - Docker Compose für Production
+- GitHub Pages für kostenloses Hosting
+- Vercel für professionelles Hosting
 
 ---
 
