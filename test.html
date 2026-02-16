@@ -1,0 +1,37 @@
+// Fortsetzung der test.html Datei
+
+                    return Promise.resolve({
+                        ok: true,
+                        json: () => Promise.resolve({
+                            response: getMockResponse(options.body ? JSON.parse(options.body).message : ''),
+                            session_id: 'demo_session',
+                            sources: ['https://demo.kiconcierge.com', 'https://demo.kiconcierge.com/preisliste.pdf'],
+                            confidence: 0.92
+                        })
+                    });
+                }
+                return originalFetch(url, options);
+            };
+            
+            function getMockResponse(message) {
+                const responses = {
+                    'was kann': 'Ich kann deine Website crawlen, PDFs lesen und Fragen zu deinen Inhalten beantworten. Ich passe mich an dein Design an und lerne automatisch dazu!',
+                    'preis': 'KI-CONCIERGE kostet €29-99/Monat. Der Professional Plan (€59/Monat) ist am beliebtesten und beinhaltet unbegrenztes Crawling, 50 PDFs und Priority Support.',
+                    'integration': 'Integration dauert 30 Sekunden: Einfach JavaScript Snippet vor </body> einfügen. Keine Coding-Kenntnisse benötigt!',
+                    'pdf': 'Ja, ich kann PDFs lesen! Lade Preislisten, Kataloge oder Whitepapers hoch - ich extrahiere den Text und beantworte Fragen dazu.',
+                    'farbe': 'Ich passe mich komplett an dein Corporate Design an. Primärfarbe, Sekundärfarbe, Schrift - alles individuell einstellbar.',
+                    'default': 'KI-CONCIERGE ist ein intelligenter Chatbot für Websites. Ich crawle automatisch deine Homepage, lese PDFs und beantworte Kundenfragen 24/7. Möchtest du mehr über Preise, Integration oder Features wissen?'
+                };
+                
+                const lowerMessage = message.toLowerCase();
+                for (const [key, response] of Object.entries(responses)) {
+                    if (lowerMessage.includes(key)) {
+                        return response;
+                    }
+                }
+                return responses.default;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,337 @@
+sparung durch KI:</span>
+                        <span id="savingsResult">2.341 €</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Neue monatliche Kosten:</span>
+                        <span id="newCostsResult">3.659 €</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Implementierungskosten:</span>
+                        <span id="implementationResult">15.000 €</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span><strong>Jährliche Nettorendite:</strong></span>
+                        <span id="annualROI"><strong>28.092 €</strong></span>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin: 30px 0;">
+                    <div style="font-size: 20px; font-weight: 600; color: #1e40af; margin-bottom: 10px;">
+                        💰 <span id="roiPercentage">187%</span> ROI im ersten Jahr
+                    </div>
+                    <div style="color: #6b7280;">
+                        Jeder investierte Euro bringt <span id="roiMultiplier">1,87 €</span> zurück
+                    </div>
+                </div>
+                
+                <button class="download-btn" onclick="downloadReport()" style="width: 100%;">
+                    📥 ROI-Bericht als PDF herunterladen
+                </button>
+                
+                <div class="disclaimer">
+                    *Berechnung basiert auf Branchendurchschnitten. Individuelle Ergebnisse können variieren.
+                </div>
+            </div>
+        </div>
+        
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h2 class="cta-title">🚀 Ihr individueller KI-Fahrplan</h2>
+            <p class="cta-description">
+                Erhalten Sie eine detaillierte Analyse mit konkreten Use-Cases für Ihr Unternehmen. 
+                Kostenlos, unverbindlich, in 24 Stunden.
+            </p>
+            
+            <div class="email-form">
+                <div class="email-input">
+                    <input type="email" id="userEmail" placeholder="Ihre Geschäfts-Email" required>
+                    <button class="submit-btn" onclick="requestConsultation()">Kostenlose Analyse anfordern</button>
+                </div>
+                <div class="disclaimer" style="color: rgba(255,255,255,0.7); margin-top: 15px;">
+                    Kein Spam. Jederzeit abbestellbar. DSGVO-konform.
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <div class="logo">KI-Strategen.eu</div>
+            <p>Ihr Partner für KI-Implementierung im Mittelstand</p>
+            <p style="margin-top: 10px; font-size: 14px;">
+                © 2026 | Made in Germany | 
+                <a href="https://ki-strategen.eu" style="color: #3B82F6; text-decoration: none;">Website</a> | 
+                <a href="mailto:info@ki-strategen.eu" style="color: #3B82F6; text-decoration: none;">Kontakt</a>
+            </p>
+        </footer>
+    </div>
+    
+    <script>
+        // Initialize sliders
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sync number inputs with sliders
+            const syncInputs = (inputId, sliderId, valueId, unit = '€') => {
+                const input = document.getElementById(inputId);
+                const slider = document.getElementById(sliderId);
+                const valueDisplay = document.getElementById(valueId);
+                
+                const updateDisplay = () => {
+                    const value = inputId.includes('Potential') ? input.value + ' %' : 
+                                 input.value.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' ' + unit;
+                    valueDisplay.textContent = value;
+                    slider.value = input.value;
+                };
+                
+                input.addEventListener('input', updateDisplay);
+                slider.addEventListener('input', () => {
+                    input.value = slider.value;
+                    updateDisplay();
+                });
+                
+                updateDisplay();
+            };
+            
+            syncInputs('currentCosts', 'currentCostsSlider', 'currentCostsValue');
+            syncInputs('automationPotential', 'automationPotentialSlider', 'automationPotentialValue', '%');
+            
+            // Set example values based on company size
+            document.getElementById('companySize').addEventListener('change', function() {
+                const size = parseInt(this.value);
+                const examples = {
+                    10: { costs: 3000, automation: 30 },
+                    50: { costs: 6000, automation: 40 },
+                    250: { costs: 15000, automation: 50 },
+                    1000: { costs: 50000, automation: 60 }
+                };
+                
+                const example = examples[size];
+                document.getElementById('currentCosts').value = example.costs;
+                document.getElementById('automationPotential').value = example.automation;
+                
+                // Trigger update
+                document.getElementById('currentCosts').dispatchEvent(new Event('input'));
+                document.getElementById('automationPotential').dispatchEvent(new Event('input'));
+                
+                calculateROI();
+            });
+            
+            // Set example values based on industry
+            document.getElementById('industry').addEventListener('change', function() {
+                const industry = this.value;
+                const automationMap = {
+                    'dienstleistung': 35,
+                    'handel': 40,
+                    'produktion': 50,
+                    'gesundheit': 30,
+                    'bildung': 25,
+                    'finanzen': 45
+                };
+                
+                document.getElementById('automationPotential').value = automationMap[industry];
+                document.getElementById('automationPotential').dispatchEvent(new Event('input'));
+                calculateROI();
+            });
+            
+            // Initial calculation
+            calculateROI();
+        });
+        
+        function calculateROI() {
+            // Get input values
+            const currentCosts = parseInt(document.getElementById('currentCosts').value);
+            const automationPotential = parseInt(document.getElementById('automationPotential').value) / 100;
+            const implementationCost = parseInt(document.getElementById('implementationCost').value);
+            const monthlyCosts = parseInt(document.getElementById('monthlyCosts').value);
+            
+            // Calculate savings
+            const monthlySavings = currentCosts * automationPotential;
+            const newMonthlyCosts = currentCosts - monthlySavings + monthlyCosts;
+            const netMonthlySavings = monthlySavings - monthlyCosts;
+            
+            // Calculate payback period (in months)
+            const paybackMonths = implementationCost / netMonthlySavings;
+            
+            // Calculate annual ROI
+            const annualNetSavings = netMonthlySavings * 12;
+            const roiPercentage = ((annualNetSavings - implementationCost) / implementationCost * 100).toFixed(0);
+            const roiMultiplier = (1 + roiPercentage / 100).toFixed(2);
+            
+            // Update results
+            document.getElementById('monthlySavings').textContent = 
+                formatCurrency(netMonthlySavings);
+            document.getElementById('paybackPeriod').textContent = 
+                paybackMonths.toFixed(1);
+            document.getElementById('currentCostsResult').textContent = 
+                formatCurrency(currentCosts);
+            document.getElementById('savingsResult').textContent = 
+                formatCurrency(monthlySavings);
+            document.getElementById('newCostsResult').textContent = 
+                formatCurrency(newMonthlyCosts);
+            document.getElementById('implementationResult').textContent = 
+                formatCurrency(implementationCost);
+            document.getElementById('annualROI').innerHTML = 
+                '<strong>' + formatCurrency(annualNetSavings - implementationCost) + '</strong>';
+            document.getElementById('roiPercentage').textContent = 
+                roiPercentage + '%';
+            document.getElementById('roiMultiplier').textContent = 
+                roiMultiplier + ' €';
+            
+            // Update chart
+            const costBar = document.getElementById('costBar');
+            const savingsBar = document.getElementById('savingsBar');
+            
+            const maxHeight = 80; // percentage
+            costBar.style.height = (currentCosts / 10000 * maxHeight) + '%';
+            savingsBar.style.height = (newMonthlyCosts / 10000 * maxHeight) + '%';
+            
+            // Update chart labels
+            costBar.querySelector('.chart-label').textContent = formatCurrency(currentCosts);
+            savingsBar.querySelector('.chart-label').textContent = formatCurrency(newMonthlyCosts);
+        }
+        
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('de-DE', {
+                style: 'currency',
+                currency: 'EUR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+        
+        function downloadReport() {
+            const email = document.getElementById('userEmail').value;
+            
+            if (!email || !email.includes('@')) {
+                alert('Bitte geben Sie eine gültige Email-Adresse ein, um den Bericht zu erhalten.');
+                document.getElementById('userEmail').focus();
+                return;
+            }
+            
+            // In production: Send to backend API
+            // For demo: Simulate download
+            const companySize = document.getElementById('companySize').options[document.getElementById('companySize').selectedIndex].text;
+            const industry = document.getElementById('industry').options[document.getElementById('industry').selectedIndex].text;
+            const monthlySavings = document.getElementById('monthlySavings').textContent;
+            const paybackPeriod = document.getElementById('paybackPeriod').textContent;
+            const roiPercentage = document.getElementById('roiPercentage').textContent;
+            
+            // Create PDF content (simulated)
+            const pdfContent = `
+                KI-ROI Analyse für Ihr Unternehmen
+                ===================================
+                
+                Erstellt am: ${new Date().toLocaleDateString('de-DE')}
+                Für: ${email}
+                
+                📊 Eingabedaten:
+                - Unternehmensgröße: ${companySize}
+                - Branche: ${industry}
+                - Aktuelle Kosten: ${document.getElementById('currentCostsResult').textContent}
+                - Automatisierungspotenzial: ${document.getElementById('automationPotential').value}%
+                - Implementierungskosten: ${document.getElementById('implementationResult').textContent}
+                - Monatliche KI-Kosten: ${document.getElementById('monthlyCosts').value} €
+                
+                📈 Ergebnisse:
+                - Monatliche Einsparung: ${monthlySavings}
+                - Amortisationszeit: ${paybackPeriod} Monate
+                - ROI im ersten Jahr: ${roiPercentage}
+                - Jährliche Nettorendite: ${document.getElementById('annualROI').innerText}
+                
+                🚀 Empfehlungen:
+                1. Quick-Win Paket (12 Wochen, ${document.getElementById('implementationResult').textContent})
+                2. Fokus auf Prozesse mit höchstem Automatisierungspotenzial
+                3. Mitarbeiter-Training für KI-Akzeptanz
+                4. ROI-Monitoring nach Implementierung
+                
+                📞 Nächste Schritte:
+                - Kostenloses Beratungsgespräch (30 Min)
+                - Individuelle Use-Case Analyse
+                - BAFA-Förderungs-Check (bis zu 50%)
+                
+                KI-Strategen.eu
+                www.ki-strategen.eu
+                info@ki-strategen.eu
+            `;
+            
+            // Create download link
+            const blob = new Blob([pdfContent], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `KI-ROI-Analyse-${new Date().toISOString().split('T')[0]}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            // Show success message
+            alert(`ROI-Bericht wurde an ${email} gesendet und heruntergeladen. Wir melden uns innerhalb von 24 Stunden für Ihr kostenloses Beratungsgespräch!`);
+            
+            // Reset form
+            document.getElementById('userEmail').value = '';
+        }
+        
+        function requestConsultation() {
+            const email = document.getElementById('userEmail').value;
+            
+            if (!email || !email.includes('@')) {
+                alert('Bitte geben Sie eine gültige Geschäfts-Email-Adresse ein.');
+                return;
+            }
+            
+            // Collect data for consultation request
+            const data = {
+                email: email,
+                companySize: document.getElementById('companySize').value,
+                industry: document.getElementById('industry').value,
+                currentCosts: document.getElementById('currentCosts').value,
+                automationPotential: document.getElementById('automationPotential').value,
+                monthlySavings: document.getElementById('monthlySavings').textContent,
+                paybackPeriod: document.getElementById('paybackPeriod').textContent,
+                timestamp: new Date().toISOString()
+            };
+            
+            // In production: Send to backend API
+            // For demo: Simulate API call
+            console.log('Consultation request:', data);
+            
+            // Show success message
+            alert(`Vielen Dank, ${email}! Wir erstellen Ihre individuelle KI-Analyse und melden uns innerhalb von 24 Stunden für ein kostenloses Beratungsgespräch.`);
+            
+            // Reset form
+            document.getElementById('userEmail').value = '';
+            
+            // Optional: Redirect to thank you page
+            // window.location.href = 'https://ki-strategen.eu/danke';
+        }
+        
+        // Auto-save to localStorage
+        setInterval(() => {
+            const inputs = {
+                companySize: document.getElementById('companySize').value,
+                industry: document.getElementById('industry').value,
+                currentCosts: document.getElementById('currentCosts').value,
+                automationPotential: document.getElementById('automationPotential').value,
+                implementationCost: document.getElementById('implementationCost').value,
+                monthlyCosts: document.getElementById('monthlyCosts').value,
+                email: document.getElementById('userEmail').value
+            };
+            localStorage.setItem('kiRoiCalculator', JSON.stringify(inputs));
+        }, 2000);
+        
+        // Load saved data
+        window.addEventListener('load', () => {
+            const saved = localStorage.getItem('kiRoiCalculator');
+            if (saved) {
+                const inputs = JSON.parse(saved);
+                Object.keys(inputs).forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element) {
+                        element.value = inputs[key];
+                        element.dispatchEvent(new Event('input'));
+                    }
+                });
+                calculateROI();
+            }
+        });
+    </script>
+</body>
+</html>
