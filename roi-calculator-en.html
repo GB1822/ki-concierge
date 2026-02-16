@@ -1,38 +1,26 @@
-Bericht als PDF herunterladen
-                </button>
-                
-                <div class="disclaimer">
-                    *Berechnung basiert auf Branchendurchschnitten. Individuelle Ergebnisse können variieren.
-                </div>
-            </div>
-        </div>
-        
-        <!-- CTA Section -->
-        <div class="cta-section">
-            <h2 class="cta-title">🚀 Ihr individueller KI-Fahrplan</h2>
             <p class="cta-description">
-                Erhalten Sie eine detaillierte Analyse mit konkreten Use-Cases für Ihr Unternehmen. 
-                Kostenlos, unverbindlich, in 24 Stunden.
+                Get a detailed analysis with concrete use cases for your business. 
+                Free, no obligation, within 24 hours.
             </p>
             
             <div class="email-form">
                 <div class="email-input">
-                    <input type="email" id="userEmail" placeholder="Ihre Geschäfts-Email" required>
-                    <button class="submit-btn" onclick="requestConsultation()">Kostenlose Analyse anfordern</button>
+                    <input type="email" id="userEmail" placeholder="Your business email" required>
+                    <button class="submit-btn" onclick="requestConsultation()">Request Free Analysis</button>
                 </div>
                 <div class="disclaimer" style="color: rgba(255,255,255,0.7); margin-top: 15px;">
-                    Kein Spam. Jederzeit abbestellbar. DSGVO-konform.
+                    No spam. Unsubscribe anytime. GDPR compliant.
                 </div>
             </div>
         </div>
         
         <footer>
             <div class="logo">KI-Strategen.eu</div>
-            <p>Ihr Partner für KI-Implementierung im Mittelstand</p>
+            <p>Your partner for AI implementation in SMEs</p>
             <p style="margin-top: 10px; font-size: 14px;">
                 © 2026 | Made in Germany | 
                 <a href="https://ki-strategen.eu" style="color: #3B82F6; text-decoration: none;">Website</a> | 
-                <a href="mailto:info@ki-strategen.eu" style="color: #3B82F6; text-decoration: none;">Kontakt</a>
+                <a href="mailto:info@ki-strategen.eu" style="color: #3B82F6; text-decoration: none;">Contact</a>
             </p>
         </footer>
     </div>
@@ -49,10 +37,10 @@ Bericht als PDF herunterladen
                 }
             });
             
-            if (lang === 'en') {
-                window.location.href = 'roi-calculator-en.html';
+            if (lang === 'de') {
+                window.location.href = 'roi-calculator.html';
             }
-            // Already on German page
+            // Already on English page
         }
         
         // Initialize sliders
@@ -65,7 +53,7 @@ Bericht als PDF herunterladen
                 
                 const updateDisplay = () => {
                     const value = inputId.includes('Potential') ? input.value + ' %' : 
-                                 input.value.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' ' + unit;
+                                 input.value.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' ' + unit;
                     valueDisplay.textContent = value;
                     slider.value = input.value;
                 };
@@ -107,12 +95,12 @@ Bericht als PDF herunterladen
             document.getElementById('industry').addEventListener('change', function() {
                 const industry = this.value;
                 const automationMap = {
-                    'dienstleistung': 35,
-                    'handel': 40,
-                    'produktion': 50,
-                    'gesundheit': 30,
-                    'bildung': 25,
-                    'finanzen': 45
+                    'services': 35,
+                    'retail': 40,
+                    'manufacturing': 50,
+                    'healthcare': 30,
+                    'education': 25,
+                    'finance': 45
                 };
                 
                 document.getElementById('automationPotential').value = automationMap[industry];
@@ -148,7 +136,7 @@ Bericht als PDF herunterladen
             document.getElementById('monthlySavings').textContent = 
                 formatCurrency(netMonthlySavings);
             document.getElementById('paybackPeriod').textContent = 
-                paybackMonths.toFixed(1).replace('.', ',');
+                paybackMonths.toFixed(1);
             document.getElementById('currentCostsResult').textContent = 
                 formatCurrency(currentCosts);
             document.getElementById('savingsResult').textContent = 
@@ -162,7 +150,7 @@ Bericht als PDF herunterladen
             document.getElementById('roiPercentage').textContent = 
                 roiPercentage + '%';
             document.getElementById('roiMultiplier').textContent = 
-                roiMultiplier.replace('.', ',') + ' €';
+                roiMultiplier + ' €';
             
             // Update chart
             const costBar = document.getElementById('costBar');
@@ -178,7 +166,7 @@ Bericht als PDF herunterladen
         }
         
         function formatCurrency(amount) {
-            return new Intl.NumberFormat('de-DE', {
+            return new Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: 'EUR',
                 minimumFractionDigits: 0,
@@ -190,7 +178,7 @@ Bericht als PDF herunterladen
             const email = document.getElementById('userEmail').value;
             
             if (!email || !email.includes('@')) {
-                alert('Bitte geben Sie eine gültige Email-Adresse ein, um den Bericht zu erhalten.');
+                alert('Please enter a valid email address to receive the report.');
                 document.getElementById('userEmail').focus();
                 return;
             }
@@ -205,36 +193,36 @@ Bericht als PDF herunterladen
             
             // Create PDF content (simulated)
             const pdfContent = `
-                KI-ROI Analyse für Ihr Unternehmen
+                AI-ROI Analysis for Your Business
                 ===================================
                 
-                Erstellt am: ${new Date().toLocaleDateString('de-DE')}
-                Für: ${email}
+                Created on: ${new Date().toLocaleDateString('en-US')}
+                For: ${email}
                 
-                📊 Eingabedaten:
-                - Unternehmensgröße: ${companySize}
-                - Branche: ${industry}
-                - Aktuelle Kosten: ${document.getElementById('currentCostsResult').textContent}
-                - Automatisierungspotenzial: ${document.getElementById('automationPotential').value}%
-                - Implementierungskosten: ${document.getElementById('implementationResult').textContent}
-                - Monatliche KI-Kosten: ${document.getElementById('monthlyCosts').value} €
+                📊 Input Data:
+                - Company Size: ${companySize}
+                - Industry: ${industry}
+                - Current Costs: ${document.getElementById('currentCostsResult').textContent}
+                - Automation Potential: ${document.getElementById('automationPotential').value}%
+                - Implementation Costs: ${document.getElementById('implementationResult').textContent}
+                - Monthly AI Costs: ${document.getElementById('monthlyCosts').value} €
                 
-                📈 Ergebnisse:
-                - Monatliche Einsparung: ${monthlySavings}
-                - Amortisationszeit: ${paybackPeriod} Monate
-                - ROI im ersten Jahr: ${roiPercentage}
-                - Jährliche Nettorendite: ${document.getElementById('annualROI').innerText}
+                📈 Results:
+                - Monthly Savings: ${monthlySavings}
+                - Payback Period: ${paybackPeriod} months
+                - First Year ROI: ${roiPercentage}
+                - Annual Net Return: ${document.getElementById('annualROI').innerText}
                 
-                🚀 Empfehlungen:
-                1. Quick-Win Paket (12 Wochen, ${document.getElementById('implementationResult').textContent})
-                2. Fokus auf Prozesse mit höchstem Automatisierungspotenzial
-                3. Mitarbeiter-Training für KI-Akzeptanz
-                4. ROI-Monitoring nach Implementierung
+                🚀 Recommendations:
+                1. Quick-Win Package (12 weeks, ${document.getElementById('implementationResult').textContent})
+                2. Focus on processes with highest automation potential
+                3. Employee training for AI adoption
+                4. ROI monitoring after implementation
                 
-                📞 Nächste Schritte:
-                - Kostenloses Beratungsgespräch (30 Min)
-                - Individuelle Use-Case Analyse
-                - BAFA-Förderungs-Check (bis zu 50%)
+                📞 Next Steps:
+                - Free consultation call (30 min)
+                - Individual use-case analysis
+                - Government funding check (up to 50%)
                 
                 KI-Strategen.eu
                 www.ki-strategen.eu
@@ -246,14 +234,14 @@ Bericht als PDF herunterladen
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `KI-ROI-Analyse-${new Date().toISOString().split('T')[0]}.pdf`;
+            a.download = `AI-ROI-Analysis-${new Date().toISOString().split('T')[0]}.pdf`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             
             // Show success message
-            alert(`ROI-Bericht wurde an ${email} gesendet und heruntergeladen. Wir melden uns innerhalb von 24 Stunden für Ihr kostenloses Beratungsgespräch!`);
+            alert(`ROI report has been sent to ${email} and downloaded. We'll contact you within 24 hours for your free consultation call!`);
             
             // Reset form
             document.getElementById('userEmail').value = '';
@@ -263,7 +251,7 @@ Bericht als PDF herunterladen
             const email = document.getElementById('userEmail').value;
             
             if (!email || !email.includes('@')) {
-                alert('Bitte geben Sie eine gültige Geschäfts-Email-Adresse ein.');
+                alert('Please enter a valid business email address.');
                 return;
             }
             
@@ -284,13 +272,13 @@ Bericht als PDF herunterladen
             console.log('Consultation request:', data);
             
             // Show success message
-            alert(`Vielen Dank, ${email}! Wir erstellen Ihre individuelle KI-Analyse und melden uns innerhalb von 24 Stunden für ein kostenloses Beratungsgespräch.`);
+            alert(`Thank you, ${email}! We're creating your individual AI analysis and will contact you within 24 hours for a free consultation call.`);
             
             // Reset form
             document.getElementById('userEmail').value = '';
             
             // Optional: Redirect to thank you page
-            // window.location.href = 'https://ki-strategen.eu/danke';
+            // window.location.href = 'https://ki-strategen.eu/thank-you';
         }
         
         // Auto-save to localStorage
@@ -304,12 +292,12 @@ Bericht als PDF herunterladen
                 monthlyCosts: document.getElementById('monthlyCosts').value,
                 email: document.getElementById('userEmail').value
             };
-            localStorage.setItem('kiRoiCalculator', JSON.stringify(inputs));
+            localStorage.setItem('aiRoiCalculator', JSON.stringify(inputs));
         }, 2000);
         
         // Load saved data
         window.addEventListener('load', () => {
-            const saved = localStorage.getItem('kiRoiCalculator');
+            const saved = localStorage.getItem('aiRoiCalculator');
             if (saved) {
                 const inputs = JSON.parse(saved);
                 Object.keys(inputs).forEach(key => {

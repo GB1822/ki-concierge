@@ -1,5 +1,71 @@
-// Fortsetzung der test.html Datei
-
+            primaryColor: '#3B82F6',
+            secondaryColor: '#1E40AF',
+            welcomeMessage: 'auto', // Automatically detects language
+            language: 'auto', // 'auto' detects browser language
+            position: 'bottom-right',
+            autoOpen: false,
+            avatar: '🤖',
+            title: 'KI-Concierge'
+        };
+    </script>
+    <script src="frontend/widget.js"></script>
+    <!-- End KI-CONCIERGE -->
+    
+    <script>
+        function testMessage(message) {
+            if (window.KIConcierge) {
+                window.KIConcierge.sendMessage(message);
+            }
+        }
+        
+        function testGerman() {
+            if (window.KIConcierge) {
+                window.KIConcierge.updateConfig({
+                    language: 'de'
+                });
+                alert('Chatbot switched to German 🇩🇪');
+            }
+        }
+        
+        function testEnglish() {
+            if (window.KIConcierge) {
+                window.KIConcierge.updateConfig({
+                    language: 'en'
+                });
+                alert('Chatbot switched to English 🇺🇸');
+            }
+        }
+        
+        function switchLanguage() {
+            if (window.KIConcierge) {
+                const currentLang = window.KIConcierge.t('welcome').includes('Hallo') ? 'de' : 'en';
+                const newLang = currentLang === 'de' ? 'en' : 'de';
+                
+                window.KIConcierge.updateConfig({
+                    language: newLang
+                });
+                
+                alert(`Chatbot switched to ${newLang === 'de' ? 'German 🇩🇪' : 'English 🇺🇸'}`);
+            }
+        }
+        
+        function changeColor() {
+            const colors = ['#3B82F6', '#10B981', '#8B5CF6', '#EF4444', '#F59E0B'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            if (window.KIConcierge) {
+                window.KIConcierge.updateConfig({
+                    primaryColor: randomColor
+                });
+            }
+        }
+        
+        // Demo: Simulate backend responses
+        window.addEventListener('load', function() {
+            // Mock API for demo
+            const originalFetch = window.fetch;
+            window.fetch = function(url, options) {
+                if (url === 'http://localhost:8000/chat') {
                     return Promise.resolve({
                         ok: true,
                         json: () => Promise.resolve({
@@ -15,21 +81,38 @@
             
             function getMockResponse(message) {
                 const responses = {
-                    'was kann': 'Ich kann deine Website crawlen, PDFs lesen und Fragen zu deinen Inhalten beantworten. Ich passe mich an dein Design an und lerne automatisch dazu!',
-                    'preis': 'KI-CONCIERGE kostet €29-99/Monat. Der Professional Plan (€59/Monat) ist am beliebtesten und beinhaltet unbegrenztes Crawling, 50 PDFs und Priority Support.',
-                    'integration': 'Integration dauert 30 Sekunden: Einfach JavaScript Snippet vor </body> einfügen. Keine Coding-Kenntnisse benötigt!',
-                    'pdf': 'Ja, ich kann PDFs lesen! Lade Preislisten, Kataloge oder Whitepapers hoch - ich extrahiere den Text und beantworte Fragen dazu.',
-                    'farbe': 'Ich passe mich komplett an dein Corporate Design an. Primärfarbe, Sekundärfarbe, Schrift - alles individuell einstellbar.',
-                    'default': 'KI-CONCIERGE ist ein intelligenter Chatbot für Websites. Ich crawle automatisch deine Homepage, lese PDFs und beantworte Kundenfragen 24/7. Möchtest du mehr über Preise, Integration oder Features wissen?'
+                    'de': {
+                        'was kann': 'Ich kann deine Website crawlen, PDFs lesen und Fragen zu deinen Inhalten beantworten. Ich passe mich an dein Design an und lerne automatisch dazu!',
+                        'preis': 'KI-CONCIERGE kostet €29-99/Monat. Der Professional Plan (€59/Monat) ist am beliebtesten und beinhaltet unbegrenztes Crawling, 50 PDFs und Priority Support.',
+                        'integration': 'Integration dauert 30 Sekunden: Einfach JavaScript Snippet vor </body> einfügen. Keine Coding-Kenntnisse benötigt!',
+                        'pdf': 'Ja, ich kann PDFs lesen! Lade Preislisten, Kataloge oder Whitepapers hoch - ich extrahiere den Text und beantworte Fragen dazu.',
+                        'farbe': 'Ich passe mich komplett an dein Corporate Design an. Primärfarbe, Sekundärfarbe, Schrift - alles individuell einstellbar.',
+                        'default': 'KI-CONCIERGE ist ein intelligenter Chatbot für Websites. Ich crawle automatisch deine Homepage, lese PDFs und beantworte Kundenfragen 24/7. Möchtest du mehr über Preise, Integration oder Features wissen?'
+                    },
+                    'en': {
+                        'what can': "I can crawl your website, read PDFs, and answer questions about your content. I adapt to your design and learn automatically!",
+                        'price': "KI-CONCIERGE costs €29-99/month. The Professional plan (€59/month) is most popular and includes unlimited crawling, 50 PDFs, and priority support.",
+                        'integration': "Integration takes 30 seconds: Just add a JavaScript snippet before </body>. No coding skills needed!",
+                        'pdf': "Yes, I can read PDFs! Upload price lists, catalogs, or whitepapers - I'll extract the text and answer questions about them.",
+                        'color': "I completely adapt to your corporate design. Primary color, secondary color, fonts - everything customizable.",
+                        'default': "KI-CONCIERGE is an intelligent chatbot for websites. I automatically crawl your homepage, read PDFs, and answer customer questions 24/7. Want to know more about pricing, integration, or features?"
+                    }
                 };
                 
+                // Detect language from message
+                const lang = message.toLowerCase().includes('was') || 
+                             message.toLowerCase().includes('preis') || 
+                             message.toLowerCase().includes('kann') ? 'de' : 'en';
+                
                 const lowerMessage = message.toLowerCase();
-                for (const [key, response] of Object.entries(responses)) {
+                const langResponses = responses[lang] || responses.en;
+                
+                for (const [key, response] of Object.entries(langResponses)) {
                     if (lowerMessage.includes(key)) {
                         return response;
                     }
                 }
-                return responses.default;
+                return langResponses.default;
             }
         });
     </script>
